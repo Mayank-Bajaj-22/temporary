@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
@@ -21,6 +22,26 @@ export default function Home() {
   const navigate = useNavigate();
   const { products } = useProducts();
 
+  // Hero slideshow: use images from available products
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  const heroProducts = products.filter(
+    (product) => product.available !== false && product.images?.[0],
+  );
+
+  const activeHeroProduct = heroProducts[heroIndex] || null;
+
+  // Automatically change image every 4.5 seconds
+  useEffect(() => {
+    if (heroProducts.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setHeroIndex((current) => (current + 1) % heroProducts.length);
+    }, 7500);
+
+    return () => clearInterval(interval);
+  }, [heroProducts.length]);
+
   const handleHeroSearch = (e) => {
     e.preventDefault();
     if (heroSearch.trim()) {
@@ -36,94 +57,204 @@ export default function Home() {
     return acc;
   }, {});
 
+  const heroContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.18,
+      },
+    },
+  };
+
+  const heroItem = {
+    hidden: {
+      opacity: 0,
+      y: "100%",
+    },
+    visible: {
+      opacity: 1,
+      y: "0%",
+      transition: {
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
   return (
     <div className="pb-20">
-      {/* ================================================================
-          HERO SECTION
-          ================================================================ */}
-      <section className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-20 border-b border-[#E8E3D9]">
+      <section className="relative overflow-hidden pt-8 pb-12 sm:pt-8 sm:pb-20 border-b border-[#E8E3D9]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5F0] via-[#F2EDE2] to-[#F7F5F0] -z-10" />
 
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#E8E3D9]/80 border border-[#B69A63]/30 rounded-full text-xs font-semibold tracking-[0.2em] uppercase text-[#76501F]">
-                <Trees className="w-3.5 h-3.5" />
-                <span>ROOTED IN NATURE</span>
-              </div>
+              <motion.div
+                variants={heroContainer}
+                initial="hidden"
+                animate="visible"
+                className="relative z-10"
+              >
+                {/* Heading */}
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif tracking-tight text-[#281A10] leading-[1.08]">
-                Crafted by Nature.{" "}
-                <span className="italic font-normal block text-[#76501F]">
-                  Made for You.
-                </span>
-              </h1>
+                {/* Crafted by Nature */}
+                <div className="overflow-hidden pb-2 -mb-2 -mx-2">
+                  <motion.h1
+                    initial={{ opacity: 0, y: "110%" }}
+                    animate={{ opacity: 1, y: "0%" }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.2,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-tight text-[#281A10]"
+                  >
+                    Crafted by Nature.
+                  </motion.h1>
+                </div>
 
-              <p className="text-base sm:text-lg text-[#777166] max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans font-light">
-                Thoughtfully handcrafted wooden serveware, standing pedestal
-                bowls, and natural stone decor that bring warmth and character
-                into your home.
-              </p>
+                {/* Made for You */}
+                <div className="overflow-hidden pb-2 -mb-2">
+                  <motion.h1
+                    initial={{ opacity: 0, y: "110%" }}
+                    animate={{ opacity: 1, y: "0%" }}
+                    transition={{
+                      duration: 1,
+                      delay: 0.35,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="font-serif text-5xl sm:text-6xl lg:text-7xl italic leading-tight text-[#8A5B25]"
+                  >
+                    Made for You.
+                  </motion.h1>
+                </div>
 
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <Button
-                  to="/products"
-                  variant="primary"
-                  size="lg"
-                  icon={ArrowRight}
-                  iconPosition="right"
+                {/* Description */}
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 1.2,
+                    delay: 0.6,
+                    ease: "easeInOut",
+                  }}
+                  className="mt-7 max-w-2xl text-base sm:text-lg leading-relaxed text-[#777166]"
                 >
-                  Explore Portfolio
-                </Button>
-                <Button to="/about" variant="secondary" size="lg">
-                  Our Story
-                </Button>
-              </div>
+                  Thoughtfully handcrafted wooden serveware, standing pedestal
+                  bowls, and natural stone decor that bring warmth and character
+                  into your home.
+                </motion.p>
 
-              <div className="pt-4 border-t border-[#E8E3D9]/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-[#777166]">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#76501F]" />
-                  100% Solid Hardwoods & Stone
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#76501F]" />
-                  Bespoke Dimensions by Request
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#76501F]" />
-                  Direct Studio WhatsApp Quotes
-                </span>
-              </div>
+                {/* Buttons */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 1.2,
+                    delay: 0.2,
+                    ease: "easeInOut",
+                  }}
+                  className="mt-9 flex flex-wrap items-center gap-4"
+                >
+                  <Link
+                    to="/portfolio"
+                    className="inline-flex items-center gap-3 px-5 py-4 bg-[#281A10] text-white rounded-md hover:bg-[#76501F] transition-all duration-300"
+                  >
+                    Explore Portfolio
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    to="/about"
+                    className="px-8 py-4 border border-[#76501F] text-[#76501F] rounded-md hover:bg-[#281A10] hover:text-white transition-all duration-300"
+                  >
+                    Our Story
+                  </Link>
+                </motion.div>
+
+                {/* Feature Highlights */}
+                <motion.div
+                  variants={heroItem}
+                  className="mt-8 pt-5 border-t border-[#E8E3D9] flex flex-wrap gap-x-6 gap-y-3 text-xs text-[#777166]"
+                >
+                  <span>✓ 100% Solid Hardwoods & Stone</span>
+                  <span>✓ Bespoke Dimensions by Request</span>
+                  <span>✓ Direct Studio WhatsApp Quotes</span>
+                </motion.div>
+              </motion.div>
             </div>
 
             {/* Right Hero Visual */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none">
+              <div className="relative mx-auto max-w-sm lg:max-w-[80%]">
                 <div className="absolute -inset-3 rounded-2xl border-2 border-dashed border-[#B69A63]/30 pointer-events-none transform -rotate-1" />
+
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-[#E8E3D9]">
-                  <img
-                    src="/images/buddhahome/walnut-scalloped-serving-collection.png"
-                    alt="Walnut Scalloped Serving Collection by BuddhaHome"
-                    className="w-full aspect-4/5 object-cover object-center"
-                    fetchPriority="high"
-                  />
-                  <div className="absolute bottom-5 left-5 right-5 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-[#E8E3D9] shadow-md flex items-center justify-between">
-                    <div>
+                  {/* Product Image Slideshow */}
+                  <div className="relative aspect-4/5 overflow-hidden">
+                    {activeHeroProduct ? (
+                      <AnimatePresence mode="wait">
+                        <motion.img
+                          key={activeHeroProduct.id || activeHeroProduct.slug}
+                          src={activeHeroProduct.images[0]}
+                          alt={activeHeroProduct.name}
+                          initial={{ opacity: 0, scale: 1.03 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.8, ease: "easeInOut" }}
+                          className="absolute inset-0 w-full h-full object-cover object-center"
+                        />
+                      </AnimatePresence>
+                    ) : (
+                      <img
+                        src="/images/buddhahome/walnut-scalloped-serving-collection.png"
+                        alt="BuddhaHome handcrafted collection"
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+
+                  {/* Dynamic Product Information */}
+                  <div className="absolute bottom-5 left-5 right-5 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-[#E8E3D9] shadow-md flex items-center justify-between gap-3">
+                    <div className="min-w-0">
                       <span className="text-[10px] font-semibold tracking-wider uppercase text-[#76501F] block">
-                        Signature Collection
+                        BuddhaHome Collection
                       </span>
-                      <h4 className="font-serif text-base text-[#281A10] font-medium">
-                        Walnut Scalloped Serving Collection
-                      </h4>
-                      <p className="text-xs text-[#777166]">
-                        Solid Walnut & Natural Beeswax Finish
-                      </p>
+
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={
+                            activeHeroProduct?.id ||
+                            activeHeroProduct?.slug ||
+                            "default"
+                          }
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.35 }}
+                        >
+                          <h4 className="font-serif text-base text-[#281A10] font-medium truncate">
+                            {activeHeroProduct?.name || "Signature Collection"}
+                          </h4>
+
+                          <p className="text-xs text-[#777166]">
+                            {activeHeroProduct?.category ||
+                              "Handcrafted with Nature"}
+                          </p>
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
+
                     <Link
-                      to="/products/walnut-scalloped-collection"
-                      className="p-2.5 rounded-full bg-[#281A10] text-white hover:bg-[#76501F] transition-colors"
-                      aria-label="View Walnut Scalloped Collection"
+                      to={
+                        activeHeroProduct?.slug
+                          ? `/products/${activeHeroProduct.slug}`
+                          : "/products"
+                      }
+                      className="p-2.5 rounded-full bg-[#281A10] text-white hover:bg-[#76501F] transition-colors shrink-0"
+                      aria-label="View Product"
                     >
                       <ArrowUpRight className="w-4 h-4" />
                     </Link>

@@ -115,7 +115,7 @@ export default function Navbar() {
         {/* Category Bar Inspired by the Reference Site */}
         <div className="hidden md:block border-t border-[#E8E3D9]/60 bg-[#F7F5F0]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center justify-center gap-8 py-2.5 overflow-x-auto no-scrollbar text-[11px] font-semibold tracking-[0.16em] uppercase">
+            <nav className="flex h-12 min-h-12 items-center justify-center gap-8 px-6 overflow-x-auto overflow-y-hidden whitespace-nowrap no-scrollbar text-[11px] font-semibold tracking-[0.16em] uppercase pl-30">
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
