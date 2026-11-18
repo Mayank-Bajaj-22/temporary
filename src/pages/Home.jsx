@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
   ArrowRight,
@@ -9,15 +9,15 @@ import {
   CheckCircle2,
   ArrowUpRight,
   ChevronRight,
-} from 'lucide-react';
-import Container from '../components/ui/Container';
-import Button from '../components/ui/Button';
-import ProductCard from '../components/products/ProductCard';
-import { useProducts } from '../context/ProductContext';
-import { categories } from '../data/categories';
+} from "lucide-react";
+import Container from "../components/ui/Container";
+import Button from "../components/ui/Button";
+import ProductCard from "../components/products/ProductCard";
+import { useProducts } from "../context/ProductContext";
+import { categories } from "../data/categories";
 
 export default function Home() {
-  const [heroSearch, setHeroSearch] = useState('');
+  const [heroSearch, setHeroSearch] = useState("");
   const navigate = useNavigate();
   const { products } = useProducts();
 
@@ -54,16 +54,26 @@ export default function Home() {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif tracking-tight text-[#281A10] leading-[1.08]">
-                Crafted by Nature.{' '}
-                <span className="italic font-normal block text-[#76501F]">Made for You.</span>
+                Crafted by Nature.{" "}
+                <span className="italic font-normal block text-[#76501F]">
+                  Made for You.
+                </span>
               </h1>
 
               <p className="text-base sm:text-lg text-[#777166] max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans font-light">
-                Thoughtfully handcrafted wooden serveware, standing pedestal bowls, and natural stone decor that bring warmth and character into your home.
+                Thoughtfully handcrafted wooden serveware, standing pedestal
+                bowls, and natural stone decor that bring warmth and character
+                into your home.
               </p>
 
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                <Button to="/products" variant="primary" size="lg" icon={ArrowRight} iconPosition="right">
+                <Button
+                  to="/products"
+                  variant="primary"
+                  size="lg"
+                  icon={ArrowRight}
+                  iconPosition="right"
+                >
                   Explore Portfolio
                 </Button>
                 <Button to="/about" variant="secondary" size="lg">
@@ -106,7 +116,9 @@ export default function Home() {
                       <h4 className="font-serif text-base text-[#281A10] font-medium">
                         Walnut Scalloped Serving Collection
                       </h4>
-                      <p className="text-xs text-[#777166]">Solid Walnut & Natural Beeswax Finish</p>
+                      <p className="text-xs text-[#777166]">
+                        Solid Walnut & Natural Beeswax Finish
+                      </p>
                     </div>
                     <Link
                       to="/products/walnut-scalloped-collection"
@@ -124,7 +136,10 @@ export default function Home() {
           {/* Search Bar */}
           <div className="mt-12 sm:mt-16 max-w-3xl mx-auto">
             <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#E8E3D9] shadow-sm">
-              <form onSubmit={handleHeroSearch} className="flex flex-col sm:flex-row gap-3">
+              <form
+                onSubmit={handleHeroSearch}
+                className="flex flex-col sm:flex-row gap-3"
+              >
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#777166]" />
                   <input
@@ -135,7 +150,12 @@ export default function Home() {
                     className="w-full pl-12 pr-4 py-3 bg-[#F7F5F0] border border-transparent focus:border-[#76501F] rounded-xl text-sm text-[#29251F] placeholder-[#777166] focus:outline-none transition-colors"
                   />
                 </div>
-                <Button type="submit" variant="wood" size="md" className="sm:w-auto w-full py-3 px-6">
+                <Button
+                  type="submit"
+                  variant="wood"
+                  size="md"
+                  className="sm:w-auto w-full py-3 px-6"
+                >
                   Search Portfolio
                 </Button>
               </form>
@@ -152,7 +172,10 @@ export default function Home() {
         if (categoryProducts.length === 0) return null;
 
         return (
-          <section key={category.slug} className="py-14 sm:py-20 border-b border-[#E8E3D9] last:border-b-0">
+          <section
+            key={category.slug}
+            className="py-14 sm:py-20 border-b border-[#E8E3D9] last:border-b-0"
+          >
             <Container>
               {/* Section Header */}
               <div className="flex items-end justify-between mb-8 sm:mb-10">
@@ -174,9 +197,16 @@ export default function Home() {
               </div>
 
               {/* Products Grid */}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-                {categoryProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {categoryProducts.map((product, index) => (
+                  <ProductCard
+                    key={product.id || product.slug}
+                    product={{
+                      ...product,
+                      animationIndex: index,
+                    }}
+                  />
                 ))}
               </div>
 
@@ -219,13 +249,24 @@ export default function Home() {
                   Every Piece Has a Story
                 </h2>
                 <p className="text-base text-[#E8E3D9]/80 font-sans leading-relaxed">
-                  From the natural character of the timber to the hands that shape it, every BuddhaHome creation celebrates the beauty of thoughtful craftsmanship. We believe home accents should anchor the senses with raw, honest textures.
+                  From the natural character of the timber to the hands that
+                  shape it, every BuddhaHome creation celebrates the beauty of
+                  thoughtful craftsmanship. We believe home accents should
+                  anchor the senses with raw, honest textures.
                 </p>
                 <p className="text-sm text-[#E8E3D9]/70 font-sans leading-relaxed">
-                  Rather than erasing grain knots and natural live contours, our artisans preserve them as living chronicles of the earth's natural design.
+                  Rather than erasing grain knots and natural live contours, our
+                  artisans preserve them as living chronicles of the earth's
+                  natural design.
                 </p>
                 <div className="pt-2">
-                  <Button to="/about" variant="gold" size="lg" icon={ArrowRight} iconPosition="right">
+                  <Button
+                    to="/about"
+                    variant="gold"
+                    size="lg"
+                    icon={ArrowRight}
+                    iconPosition="right"
+                  >
                     Discover Our Story
                   </Button>
                 </div>
@@ -254,9 +295,13 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Hammer className="w-6 h-6 stroke-[1.5]" />
               </div>
-              <h3 className="font-serif text-xl text-[#29251F]">Thoughtfully Handcrafted</h3>
+              <h3 className="font-serif text-xl text-[#29251F]">
+                Thoughtfully Handcrafted
+              </h3>
               <p className="text-sm text-[#777166] leading-relaxed">
-                Every joint, bevel, and contour is hand-shaped by artisans who respect traditional joinery methods that endure through generations.
+                Every joint, bevel, and contour is hand-shaped by artisans who
+                respect traditional joinery methods that endure through
+                generations.
               </p>
             </div>
 
@@ -264,9 +309,13 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Trees className="w-6 h-6 stroke-[1.5]" />
               </div>
-              <h3 className="font-serif text-xl text-[#29251F]">Natural Material Character</h3>
+              <h3 className="font-serif text-xl text-[#29251F]">
+                Natural Material Character
+              </h3>
               <p className="text-sm text-[#777166] leading-relaxed">
-                We celebrate genuine grain irregularities, growth rings, and honed travertine pockets instead of masking them behind synthetic coatings.
+                We celebrate genuine grain irregularities, growth rings, and
+                honed travertine pockets instead of masking them behind
+                synthetic coatings.
               </p>
             </div>
 
@@ -274,9 +323,12 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Sparkles className="w-6 h-6 stroke-[1.5]" />
               </div>
-              <h3 className="font-serif text-xl text-[#29251F]">Food-Safe Organic Finishes</h3>
+              <h3 className="font-serif text-xl text-[#29251F]">
+                Food-Safe Organic Finishes
+              </h3>
               <p className="text-sm text-[#777166] leading-relaxed">
-                Finished with natural botanical oils and beeswax buffs that enhance tactile warmth without releasing toxic chemical fumes.
+                Finished with natural botanical oils and beeswax buffs that
+                enhance tactile warmth without releasing toxic chemical fumes.
               </p>
             </div>
           </div>
@@ -297,7 +349,9 @@ export default function Home() {
                 Have a Specific Dimension or Wood Species in Mind?
               </h3>
               <p className="text-sm text-[#777166] leading-relaxed">
-                Connect directly with our workshop for bespoke sizing, custom live-edge platters, or architectural wood and stone installations.
+                Connect directly with our workshop for bespoke sizing, custom
+                live-edge platters, or architectural wood and stone
+                installations.
               </p>
             </div>
             <div className="shrink-0">
