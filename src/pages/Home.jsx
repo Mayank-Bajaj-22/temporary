@@ -159,16 +159,26 @@ export default function Home() {
                   className="mt-9 flex flex-wrap items-center gap-4"
                 >
                   <Link
-                    to="/portfolio"
-                    className="inline-flex items-center gap-3 px-5 py-4 bg-[#281A10] text-white rounded-md hover:bg-[#76501F] transition-all duration-300"
+                    to="/products"
+                    className="group inline-flex items-center gap-3 px-5 py-4 bg-[#281A10] text-white rounded-md hover:bg-[#76501F] transition-all duration-300"
                   >
-                    Explore Portfolio
-                    <ArrowUpRight className="w-4 h-4" />
+                    {/* Animated Text */}
+                    <span className="relative inline-block h-[1.5em] overflow-hidden leading-[1.5]">
+                      <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                        Explore Portfolio
+                      </span>
+
+                      <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                        Explore Portfolio
+                      </span>
+                    </span>
+
+                    <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </Link>
 
                   <Link
                     to="/about"
-                    className="px-8 py-4 border border-[#76501F] text-[#76501F] rounded-md hover:bg-[#281A10] hover:text-white transition-all duration-300"
+                    className="px-5 py-4 border border-[#76501F] text-[#76501F] rounded-md hover:bg-[#281A10] hover:text-white transition-all duration-300"
                   >
                     Our Story
                   </Link>
@@ -318,12 +328,21 @@ export default function Home() {
                     {category.description}
                   </p>
                 </div>
+
                 <Link
                   to={`/categories/${category.slug}`}
-                  className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.15em] uppercase text-[#76501F] hover:text-[#281A10] transition-colors border-b border-[#76501F]/40 hover:border-[#281A10] pb-0.5 shrink-0 ml-6"
+                  className="group hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.15em] uppercase text-[#76501F] hover:text-[#281A10] transition-colors border-b border-[#76501F]/40 hover:border-[#281A10] pb-0.5 shrink-0 ml-6"
                 >
-                  View All
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span className="relative inline-block h-[1.5em] overflow-hidden leading-[1.5]">
+                    <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                      View All
+                    </span>
+                    <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                      View All
+                    </span>
+                  </span>
+
+                  <ChevronRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
 
@@ -345,10 +364,18 @@ export default function Home() {
               <div className="mt-10 text-center">
                 <Link
                   to={`/categories/${category.slug}`}
-                  className="inline-flex items-center justify-center gap-2 px-10 py-3 bg-[#281A10] text-[#F7F5F0] text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#76501F] transition-colors duration-200 rounded-sm"
+                  className="group inline-flex items-center justify-center gap-2 px-10 py-3 bg-[#281A10] text-[#F7F5F0] text-xs font-semibold tracking-[0.2em] uppercase hover:bg-[#76501F] transition-colors duration-300 rounded-sm"
                 >
-                  View All
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span className="relative inline-block h-[1.5em] overflow-hidden leading-[1.5]">
+                    <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                      View All
+                    </span>
+                    <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+                      View All
+                    </span>
+                  </span>
+
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
             </Container>
