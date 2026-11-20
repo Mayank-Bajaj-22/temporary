@@ -73,7 +73,7 @@ export default function Navbar() {
                   Buddha<span className="text-[#76501F] italic font-normal">Home</span>
                 </span>
                 <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#777166] font-medium mt-1">
-                  Artisanal Wood & Stone
+                  Artisanal Wood
                 </span>
               </Link>
             </div>

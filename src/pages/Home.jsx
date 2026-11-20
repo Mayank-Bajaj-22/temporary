@@ -242,78 +242,165 @@ export default function Home() {
       })}
 
       {/* BRAND STORY SECTION */}
-      <section className="py-14 sm:py-20 border-b border-[#E8E3D9]">
-        <Container>
-          <div className="bg-[#281A10] text-[#F7F5F0] rounded-3xl overflow-hidden border border-[#3B281B] shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-              <div className="lg:col-span-6 relative aspect-4/3 lg:aspect-auto lg:h-full overflow-hidden">
-                <img
-                  src="/images/buddhahome/rustic-wooden-stand-tray.png"
-                  alt="BuddhaHome artisan woodcraft and display stands"
-                  loading="lazy"
-                  className="w-full h-full object-cover object-center brightness-95"
-                />
+      <section className="bg-[#281A10] text-[#F7F5F0] overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          {/* LEFT — BRAND IMAGE */}
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[560px] overflow-hidden">
+            <motion.img
+              src="/images/buddhahome/rustic-wooden-stand-tray.png"
+              alt="BuddhaHome handcrafted wooden products"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+              initial={{ scale: 1.08 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 1.6,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#281A10] via-transparent to-transparent lg:hidden" />
-              </div>
-
-              <div className="lg:col-span-6 p-8 sm:p-12 lg:p-16 space-y-6">
-                <span className="text-xs font-semibold tracking-[0.25em] text-[#B69A63] uppercase">
-                  Artisanal Heritage
-                </span>
-
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-tight">
-                  Every Piece Has a Story
-                </h2>
-
-                <p className="text-base text-[#E8E3D9]/80 font-sans leading-relaxed">
-                  From the natural character of the timber to the hands that
-                  shape it, every BuddhaHome creation celebrates the beauty of
-                  thoughtful craftsmanship. We believe home accents should
-                  anchor the senses with raw, honest textures.
-                </p>
-
-                <p className="text-sm text-[#E8E3D9]/70 font-sans leading-relaxed">
-                  Rather than erasing grain knots and natural live contours, our
-                  artisans preserve them as living chronicles of the earth's
-                  natural design.
-                </p>
-
-                <div className="pt-2">
-                  <Button
-                    to="/about"
-                    variant="gold"
-                    size="lg"
-                    icon={ArrowRight}
-                    iconPosition="right"
-                  >
-                    Discover Our Story
-                  </Button>
-                </div>
-              </div>
-            </div>
+            {/* Mobile image overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#281A10]/60 via-transparent to-transparent lg:hidden" />
           </div>
-        </Container>
+
+          {/* RIGHT — BRAND CONTENT */}
+          <motion.div
+            className="flex flex-col justify-center p-8 sm:p-12 lg:p-16 xl:p-20 space-y-7"
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{
+              duration: 1,
+              delay: 0.35,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            {/* Small Label */}
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-[#B69A63]" />
+              <span className="text-[#B69A63] text-xs tracking-[0.25em] uppercase">
+                Our Story
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.2] font-medium">
+              The Beauty of
+              <br />
+              <span className="text-[#B69A63] italic">Handmade Living</span>
+            </h2>
+
+            {/* Description */}
+            <p className="text-[#D5CCBF] text-sm sm:text-base leading-8 max-w-xl">
+              At BuddhaHome, we believe that the beauty of a home lies in the
+              little details. Every creation reflects the warmth of natural
+              materials, the skill of thoughtful craftsmanship, and the charm of
+              timeless design.
+            </p>
+
+            <p className="text-[#D5CCBF] text-sm sm:text-base leading-8 max-w-xl">
+              From handcrafted wooden pieces to thoughtfully curated home
+              accessories, each product brings a sense of warmth, character, and
+              individuality to your space.
+            </p>
+
+            {/* Decorative Divider */}
+            <div className="w-16 h-[1px] bg-[#B69A63]/70" />
+
+            {/* Explore Button */}
+            <Link
+              to="/about"
+              className="group inline-flex items-center gap-4 w-fit text-[#F7F5F0] text-xs tracking-[0.18em] uppercase"
+            >
+              <span className="relative pb-2">
+                Discover Our Story
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#B69A63] origin-left transition-transform duration-500 group-hover:scale-x-0" />
+              </span>
+
+              <span className="w-9 h-9 rounded-full border border-[#B69A63]/60 flex items-center justify-center transition-all duration-500 group-hover:bg-[#B69A63] group-hover:text-[#281A10] group-hover:translate-x-1">
+                <ArrowRight size={15} />
+              </span>
+            </Link>
+          </motion.div>
+        </div>
       </section>
 
       {/* CRAFTSMANSHIP VALUES */}
-      <section className="py-14 sm:py-20 border-b border-[#E8E3D9] bg-white">
+      <section className="relative py-16 sm:py-20 border-b border-[#E8E3D9] overflow-hidden bg-gradient-to-b from-[#FFFFFF] via-[#FAF8F3] to-[#F7F5F0]">
         <Container>
-          <div className="text-center max-w-xl mx-auto mb-12">
+          {/* Section Heading */}
+          <motion.div
+            className="text-center max-w-xl mx-auto mb-12 sm:mb-14"
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
             <span className="text-xs font-semibold tracking-[0.2em] text-[#76501F] uppercase">
               The BuddhaHome Standard
             </span>
 
-            <h2 className="text-2xl sm:text-3xl font-serif text-[#29251F] mt-2">
+            <h2 className="text-2xl sm:text-3xl font-serif text-[#29251F] mt-3 leading-snug">
               Built on Reverence for Raw Wood & Stone
             </h2>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
-            <div className="p-8 rounded-2xl bg-[#F7F5F0] border border-[#E8E3D9] text-center space-y-4">
-              <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
+            <p className="mt-3 text-sm text-[#777166] leading-relaxed">
+              Thoughtful craftsmanship, natural materials and timeless quality
+              in every creation.
+            </p>
+          </motion.div>
+
+          {/* Cards Container */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.18,
+                },
+              },
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            {/* CARD 1 */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 35 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.75,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+              whileHover={{
+                y: -7,
+                transition: { duration: 0.35, ease: "easeOut" },
+              }}
+              className="group relative p-8 sm:p-9 rounded-2xl bg-white/80 border border-[#E8E3D9] text-center space-y-5 shadow-sm hover:border-[#B69A63] hover:shadow-[0_18px_45px_rgba(40,26,16,0.08)] transition-[border-color,box-shadow] duration-500"
+            >
+              {/* Icon Circle */}
+              <motion.div
+                whileHover={{
+                  scale: 1.08,
+                  rotate: -5,
+                  borderColor: "#B69A63",
+                  boxShadow: "0 0 0 5px rgba(182,154,99,0.10)",
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-16 h-16 mx-auto rounded-full bg-[#F7F5F0] border border-[#E8E3D9] flex items-center justify-center text-[#76501F] transition-colors duration-500"
+              >
                 <Hammer className="w-6 h-6 stroke-[1.5]" />
-              </div>
+              </motion.div>
 
               <h3 className="font-serif text-xl text-[#29251F]">
                 Thoughtfully Handcrafted
@@ -324,12 +411,43 @@ export default function Home() {
                 respect traditional joinery methods that endure through
                 generations.
               </p>
-            </div>
 
-            <div className="p-8 rounded-2xl bg-[#F7F5F0] border border-[#E8E3D9] text-center space-y-4">
-              <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
+              {/* Subtle Bottom Accent */}
+              <div className="w-8 h-[1px] bg-[#B69A63]/60 mx-auto transition-all duration-500 group-hover:w-14" />
+            </motion.div>
+
+            {/* CARD 2 */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 35 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.75,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+              whileHover={{
+                y: -7,
+                transition: { duration: 0.35, ease: "easeOut" },
+              }}
+              className="group relative p-8 sm:p-9 rounded-2xl bg-white/80 border border-[#E8E3D9] text-center space-y-5 shadow-sm hover:border-[#B69A63] hover:shadow-[0_18px_45px_rgba(40,26,16,0.08)] transition-[border-color,box-shadow] duration-500"
+            >
+              {/* Icon Circle */}
+              <motion.div
+                whileHover={{
+                  scale: 1.08,
+                  rotate: 5,
+                  borderColor: "#B69A63",
+                  boxShadow: "0 0 0 5px rgba(182,154,99,0.10)",
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-16 h-16 mx-auto rounded-full bg-[#F7F5F0] border border-[#E8E3D9] flex items-center justify-center text-[#76501F] transition-colors duration-500"
+              >
                 <Trees className="w-6 h-6 stroke-[1.5]" />
-              </div>
+              </motion.div>
 
               <h3 className="font-serif text-xl text-[#29251F]">
                 Natural Material Character
@@ -340,12 +458,43 @@ export default function Home() {
                 honed travertine pockets instead of masking them behind
                 synthetic coatings.
               </p>
-            </div>
 
-            <div className="p-8 rounded-2xl bg-[#F7F5F0] border border-[#E8E3D9] text-center space-y-4">
-              <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
+              {/* Subtle Bottom Accent */}
+              <div className="w-8 h-[1px] bg-[#B69A63]/60 mx-auto transition-all duration-500 group-hover:w-14" />
+            </motion.div>
+
+            {/* CARD 3 */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 35 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.75,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                },
+              }}
+              whileHover={{
+                y: -7,
+                transition: { duration: 0.35, ease: "easeOut" },
+              }}
+              className="group relative p-8 sm:p-9 rounded-2xl bg-white/80 border border-[#E8E3D9] text-center space-y-5 shadow-sm hover:border-[#B69A63] hover:shadow-[0_18px_45px_rgba(40,26,16,0.08)] transition-[border-color,box-shadow] duration-500"
+            >
+              {/* Icon Circle */}
+              <motion.div
+                whileHover={{
+                  scale: 1.08,
+                  rotate: -5,
+                  borderColor: "#B69A63",
+                  boxShadow: "0 0 0 5px rgba(182,154,99,0.10)",
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-16 h-16 mx-auto rounded-full bg-[#F7F5F0] border border-[#E8E3D9] flex items-center justify-center text-[#76501F] transition-colors duration-500"
+              >
                 <Sparkles className="w-6 h-6 stroke-[1.5]" />
-              </div>
+              </motion.div>
 
               <h3 className="font-serif text-xl text-[#29251F]">
                 Food-Safe Organic Finishes
@@ -355,35 +504,103 @@ export default function Home() {
                 Finished with natural botanical oils and beeswax buffs that
                 enhance tactile warmth without releasing toxic chemical fumes.
               </p>
-            </div>
-          </div>
+
+              {/* Subtle Bottom Accent */}
+              <div className="w-8 h-[1px] bg-[#B69A63]/60 mx-auto transition-all duration-500 group-hover:w-14" />
+            </motion.div>
+          </motion.div>
         </Container>
       </section>
 
-      {/* BESPOKE ENQUIRY CALLOUT */}
-      <section className="py-14 sm:py-20">
+      {/* BESPOKE ENQUIRY — EDITORIAL CTA */}
+      <section className="relative py-16 sm:py-20 overflow-hidden">
         <Container>
-          <div className="bg-[#EFEAD8] rounded-3xl p-8 sm:p-12 lg:p-16 border border-[#B69A63]/30 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-            <div className="max-w-xl space-y-3">
-              <span className="text-xs font-semibold tracking-[0.2em] text-[#76501F] uppercase">
-                Custom Commissions & Inquiries
-              </span>
+          {/* Main CTA Wrapper */}
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#B69A63]/25 bg-gradient-to-br from-[#F7F5F0] via-[#F3EEDF] to-[#EFEAD8]">
+            {/* Subtle Background Decoration */}
+            <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-[#B69A63]/[0.06] blur-3xl pointer-events-none" />
 
-              <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#281A10]">
-                Have a Specific Dimension or Wood Species in Mind?
-              </h3>
+            <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#76501F]/[0.04] blur-3xl pointer-events-none" />
 
-              <p className="text-sm text-[#777166] leading-relaxed">
-                Connect directly with our workshop for bespoke sizing, custom
-                live-edge platters, or architectural wood and stone
-                installations.
-              </p>
-            </div>
+            {/* Gold Divider */}
+            <motion.div
+              className="absolute top-0 left-0 h-[2px] bg-[#B69A63]"
+              initial={{ width: "0%" }}
+              whileInView={{ width: "100%" }}
+              viewport={{ once: false }}
+              transition={{
+                duration: 1.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            />
 
-            <div className="shrink-0">
-              <Button to="/contact" variant="primary" size="lg">
-                Contact Workshop
-              </Button>
+            {/* CTA Content */}
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 p-8 sm:p-12 lg:p-16">
+              {/* LEFT — EDITORIAL TEXT */}
+              <motion.div
+                className="max-w-2xl space-y-4 text-center md:text-left"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{
+                  duration: 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {/* Eyebrow */}
+                <div className="flex items-center justify-center md:justify-start gap-3">
+                  <span className="w-7 h-[1px] bg-[#B69A63]" />
+
+                  <span className="text-[10px] sm:text-xs font-semibold tracking-[0.22em] text-[#76501F] uppercase">
+                    Custom Commissions & Inquiries
+                  </span>
+                </div>
+
+                {/* Heading */}
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] leading-[1.2] text-[#281A10]">
+                  Have a Specific Dimension or Wood Species in Mind?
+                </h2>
+
+                {/* Description */}
+                <p className="text-sm sm:text-base text-[#777166] leading-7 max-w-xl mx-auto md:mx-0">
+                  Connect directly with our workshop for bespoke sizing, custom
+                  live-edge platters, or architectural wood and stone
+                  installations.
+                </p>
+
+                {/* Decorative Accent */}
+                <div className="pt-2 flex justify-center md:justify-start">
+                  <div className="w-12 h-[1px] bg-[#B69A63]/70" />
+                </div>
+              </motion.div>
+
+              {/* RIGHT — CONTACT BUTTON */}
+              <motion.div
+                className="relative shrink-0"
+                initial={{ opacity: 0, x: 35 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{
+                  duration: 0.9,
+                  delay: 0.2,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <Button
+                  to="/contact"
+                  variant="primary"
+                  size="lg"
+                  className="group"
+                >
+                  <span className="inline-flex items-center gap-3">
+                    Contact Workshop
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </span>
+                </Button>
+              </motion.div>
             </div>
           </div>
         </Container>
