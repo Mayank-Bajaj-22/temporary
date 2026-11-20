@@ -32,7 +32,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 -ml-2 text-[#29251F] hover:text-[#76501F] transition-colors rounded-sm focus-visible:outline-2"
+                className="p-2 -ml-2 text-[#29251F] hover:text-[#76501F] transition-colors rounded-sm focus-visible:outline-2 lg:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu className="w-6 h-6 stroke-[1.75]" />
