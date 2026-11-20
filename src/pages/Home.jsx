@@ -177,7 +177,7 @@ export default function Home() {
               {/* Section Header */}
               <div className="flex items-end justify-between mb-8 sm:mb-10">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-medium tracking-normal text-[#29251F] uppercase">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-semibold tracking-normal text-[#29251F] lowercase">
                     {category.name}
                   </h2>
 
