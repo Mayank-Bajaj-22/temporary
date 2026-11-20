@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  Search,
   ArrowRight,
   Trees,
   Hammer,
   Sparkles,
-  CheckCircle2,
   ArrowUpRight,
   ChevronRight,
 } from "lucide-react";
+
 import Container from "../components/ui/Container";
 import Button from "../components/ui/Button";
 import ProductCard from "../components/products/ProductCard";
@@ -18,298 +17,155 @@ import { useProducts } from "../context/ProductContext";
 import { categories } from "../data/categories";
 
 export default function Home() {
-  const [heroSearch, setHeroSearch] = useState("");
-  const navigate = useNavigate();
   const { products } = useProducts();
 
-  // Hero slideshow: use images from available products
+  // Hero slideshow
   const [heroIndex, setHeroIndex] = useState(0);
 
-  const heroProducts = products.filter(
-    (product) => product.available !== false && product.images?.[0],
-  );
+  const heroImages = products
+    .filter((product) => product.available !== false)
+    .flatMap((product) =>
+      (product.images || []).filter(Boolean).map((src) => ({
+        src,
+        alt: product.name || "BuddhaHome Collection",
+      })),
+    );
 
-  const activeHeroProduct = heroProducts[heroIndex] || null;
+  // Alternate between 2-image and 3-image layouts
+  const heroSlides = [];
+  let imageIndex = 0;
+  let layoutIndex = 0;
 
-  // Automatically change image every 4.5 seconds
+  while (imageIndex < heroImages.length) {
+    const count = layoutIndex % 2 === 0 ? 2 : 3;
+
+    const images = heroImages.slice(imageIndex, imageIndex + count);
+
+    imageIndex += count;
+
+    if (images.length === 1 && heroImages.length > 1) {
+      images.push(heroImages[0]);
+    }
+
+    if (images.length > 0) {
+      heroSlides.push(images);
+    }
+
+    layoutIndex++;
+  }
+
+  const activeHeroSlide = heroSlides.length
+    ? heroSlides[heroIndex % heroSlides.length]
+    : [];
+
+  // Automatic slideshow
   useEffect(() => {
-    if (heroProducts.length <= 1) return;
+    if (heroSlides.length <= 1) return;
 
     const interval = setInterval(() => {
-      setHeroIndex((current) => (current + 1) % heroProducts.length);
-    }, 7500);
+      setHeroIndex((current) => (current + 1) % heroSlides.length);
+    }, 9000);
 
     return () => clearInterval(interval);
-  }, [heroProducts.length]);
+  }, [heroSlides.length]);
 
-  const handleHeroSearch = (e) => {
-    e.preventDefault();
-    if (heroSearch.trim()) {
-      navigate(`/products?q=${encodeURIComponent(heroSearch.trim())}`);
-    }
-  };
-
-  // Group products by category slug for per-category sections
+  // Group products by category
   const productsByCategory = categories.reduce((acc, cat) => {
     acc[cat.slug] = products
       .filter((p) => p.categorySlug === cat.slug && p.available !== false)
       .slice(0, 4);
+
     return acc;
   }, {});
 
-  const heroContainer = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.18,
-      },
-    },
-  };
-
-  const heroItem = {
-    hidden: {
-      opacity: 0,
-      y: "100%",
-    },
-    visible: {
-      opacity: 1,
-      y: "0%",
-      transition: {
-        duration: 1,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-  };
-
   return (
     <div className="pb-20">
-      <section className="relative overflow-hidden pt-8 pb-12 sm:pt-8 sm:pb-20 border-b border-[#E8E3D9]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5F0] via-[#F2EDE2] to-[#F7F5F0] -z-10" />
-
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <motion.div
-                variants={heroContainer}
-                initial="hidden"
-                animate="visible"
-                className="relative z-10"
-              >
-                {/* Heading */}
-
-                {/* Crafted by Nature */}
-                <div className="overflow-hidden pb-2 -mb-2 -mx-2">
-                  <motion.h1
-                    initial={{ opacity: 0, y: "110%" }}
-                    animate={{ opacity: 1, y: "0%" }}
-                    transition={{
-                      duration: 1,
-                      delay: 0.2,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-tight text-[#281A10]"
-                  >
-                    Crafted by Nature.
-                  </motion.h1>
-                </div>
-
-                {/* Made for You */}
-                <div className="overflow-hidden pb-2 -mb-2">
-                  <motion.h1
-                    initial={{ opacity: 0, y: "110%" }}
-                    animate={{ opacity: 1, y: "0%" }}
-                    transition={{
-                      duration: 1,
-                      delay: 0.35,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="font-serif text-5xl sm:text-6xl lg:text-7xl italic leading-tight text-[#8A5B25]"
-                  >
-                    Made for You.
-                  </motion.h1>
-                </div>
-
-                {/* Description */}
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    duration: 1.2,
-                    delay: 0.6,
-                    ease: "easeInOut",
-                  }}
-                  className="mt-7 max-w-2xl text-base sm:text-lg leading-relaxed text-[#777166]"
-                >
-                  Thoughtfully handcrafted wooden serveware, standing pedestal
-                  bowls, and natural stone decor that bring warmth and character
-                  into your home.
-                </motion.p>
-
-                {/* Buttons */}
+      {/* HERO SLIDESHOW */}
+      <section className="relative w-full h-[60vh] min-h-[420px] max-h-[760px] overflow-hidden bg-[#281A10]">
+        {activeHeroSlide.length > 0 && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={heroIndex}
+              className="absolute inset-0 grid h-full w-full grid-cols-1 sm:[grid-template-columns:var(--hero-columns)]"
+              style={{
+                "--hero-columns": `repeat(${activeHeroSlide.length}, minmax(0, 1fr))`,
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              {activeHeroSlide.map((item, index) => (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  key={`${heroIndex}-${index}`}
+                  className={`relative h-full min-w-0 overflow-hidden ${
+                    index === 0 ? "" : "hidden sm:block"
+                  }`}
+                  initial={{ scale: 1.06 }}
+                  animate={{ scale: 1 }}
                   transition={{
-                    duration: 1.2,
-                    delay: 0.2,
-                    ease: "easeInOut",
+                    duration: 1.4,
+                    ease: "easeOut",
                   }}
-                  className="mt-9 flex flex-wrap items-center gap-4"
                 >
-                  <Link
-                    to="/products"
-                    className="group inline-flex items-center gap-3 px-5 py-4 bg-[#281A10] text-white rounded-md hover:bg-[#76501F] transition-all duration-300"
-                  >
-                    {/* Animated Text */}
-                    <span className="relative inline-block h-[1.5em] overflow-hidden leading-[1.5]">
-                      <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
-                        Explore Portfolio
-                      </span>
-
-                      <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
-                        Explore Portfolio
-                      </span>
-                    </span>
-
-                    <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </Link>
-
-                  <Link
-                    to="/about"
-                    className="px-5 py-4 border border-[#76501F] text-[#76501F] rounded-md hover:bg-[#281A10] hover:text-white transition-all duration-300"
-                  >
-                    Our Story
-                  </Link>
-                </motion.div>
-
-                {/* Feature Highlights */}
-                <motion.div
-                  variants={heroItem}
-                  className="mt-8 pt-5 border-t border-[#E8E3D9] flex flex-wrap gap-x-6 gap-y-3 text-xs text-[#777166]"
-                >
-                  <span>✓ 100% Solid Hardwoods & Stone</span>
-                  <span>✓ Bespoke Dimensions by Request</span>
-                  <span>✓ Direct Studio WhatsApp Quotes</span>
-                </motion.div>
-              </motion.div>
-            </div>
-
-            {/* Right Hero Visual */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto max-w-sm lg:max-w-[80%]">
-                <div className="absolute -inset-3 rounded-2xl border-2 border-dashed border-[#B69A63]/30 pointer-events-none transform -rotate-1" />
-
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-[#E8E3D9]">
-                  {/* Product Image Slideshow */}
-                  <div className="relative aspect-4/5 overflow-hidden">
-                    {activeHeroProduct ? (
-                      <AnimatePresence mode="wait">
-                        <motion.img
-                          key={activeHeroProduct.id || activeHeroProduct.slug}
-                          src={activeHeroProduct.images[0]}
-                          alt={activeHeroProduct.name}
-                          initial={{ opacity: 0, scale: 1.03 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.8, ease: "easeInOut" }}
-                          className="absolute inset-0 w-full h-full object-cover object-center"
-                        />
-                      </AnimatePresence>
-                    ) : (
-                      <img
-                        src="/images/buddhahome/walnut-scalloped-serving-collection.png"
-                        alt="BuddhaHome handcrafted collection"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-
-                  {/* Dynamic Product Information */}
-                  <div className="absolute bottom-5 left-5 right-5 p-4 bg-white/95 backdrop-blur-md rounded-xl border border-[#E8E3D9] shadow-md flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <span className="text-[10px] font-semibold tracking-wider uppercase text-[#76501F] block">
-                        BuddhaHome Collection
-                      </span>
-
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={
-                            activeHeroProduct?.id ||
-                            activeHeroProduct?.slug ||
-                            "default"
-                          }
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -8 }}
-                          transition={{ duration: 0.35 }}
-                        >
-                          <h4 className="font-serif text-base text-[#281A10] font-medium truncate">
-                            {activeHeroProduct?.name || "Signature Collection"}
-                          </h4>
-
-                          <p className="text-xs text-[#777166]">
-                            {activeHeroProduct?.category ||
-                              "Handcrafted with Nature"}
-                          </p>
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-
-                    <Link
-                      to={
-                        activeHeroProduct?.slug
-                          ? `/products/${activeHeroProduct.slug}`
-                          : "/products"
-                      }
-                      className="p-2.5 rounded-full bg-[#281A10] text-white hover:bg-[#76501F] transition-colors shrink-0"
-                      aria-label="View Product"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Search Bar */}
-          <div className="mt-12 sm:mt-16 max-w-3xl mx-auto">
-            <div className="bg-white p-3 sm:p-4 rounded-2xl border border-[#E8E3D9] shadow-sm">
-              <form
-                onSubmit={handleHeroSearch}
-                className="flex flex-col sm:flex-row gap-3"
-              >
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#777166]" />
-                  <input
-                    type="text"
-                    value={heroSearch}
-                    onChange={(e) => setHeroSearch(e.target.value)}
-                    placeholder="Search artisanal pieces (e.g. Scalloped Platter, Travertine Tray, Bear Board)..."
-                    className="w-full pl-12 pr-4 py-3 bg-[#F7F5F0] border border-transparent focus:border-[#76501F] rounded-xl text-sm text-[#29251F] placeholder-[#777166] focus:outline-none transition-colors"
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className="w-full h-full object-cover"
                   />
-                </div>
-                <Button
-                  type="submit"
-                  variant="wood"
-                  size="md"
-                  className="sm:w-auto w-full py-3 px-6"
-                >
-                  Search Portfolio
-                </Button>
-              </form>
-            </div>
-          </div>
-        </Container>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
+
+        {/* Image overlay */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+
+        {/* Explore button */}
+        <Link
+          to="/products"
+          aria-label="Explore Collection"
+          className={`group absolute z-20
+  inline-flex items-center justify-center gap-2 sm:gap-3
+  px-5 sm:px-7 py-3.5
+  rounded-full
+  border border-white/70
+  bg-black/20 backdrop-blur-sm
+  text-white
+  text-[10px] sm:text-xs
+  font-medium tracking-[0.12em] sm:tracking-[0.22em]
+  whitespace-nowrap
+  overflow-hidden
+  transition-all duration-500
+  hover:bg-[#F7F5F0]
+  hover:text-[#281A10]
+  hover:border-[#B69A63]
+  hover:shadow-xl
+
+  left-1/2 -translate-x-1/2 bottom-[18%]
+
+  sm:left-1/2 sm:-translate-x-1/2 sm:bottom-[18%]
+`}
+        >
+          <span className="relative inline-block h-[1.5em] whitespace-nowrap shrink-0 overflow-hidden leading-[1.5]">
+            <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+              EXPLORE COLLECTION
+            </span>
+
+            <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
+              EXPLORE COLLECTION
+            </span>
+          </span>
+
+          <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </Link>
       </section>
 
-      {/* ================================================================
-          PER-CATEGORY PRODUCT SECTIONS (Swadeh-style)
-          ================================================================ */}
+      {/* PER-CATEGORY PRODUCT SECTIONS */}
       {categories.map((category) => {
         const categoryProducts = productsByCategory[category.slug] || [];
+
         if (categoryProducts.length === 0) return null;
 
         return (
@@ -321,9 +177,10 @@ export default function Home() {
               {/* Section Header */}
               <div className="flex items-end justify-between mb-8 sm:mb-10">
                 <div>
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-tight text-[#29251F] uppercase">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-sans font-medium tracking-normal text-[#29251F] uppercase">
                     {category.name}
                   </h2>
+
                   <p className="mt-1.5 text-sm text-[#777166] max-w-lg leading-relaxed hidden sm:block">
                     {category.description}
                   </p>
@@ -337,6 +194,7 @@ export default function Home() {
                     <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
                       View All
                     </span>
+
                     <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
                       View All
                     </span>
@@ -347,7 +205,6 @@ export default function Home() {
               </div>
 
               {/* Products Grid */}
-
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
                 {categoryProducts.map((product, index) => (
                   <ProductCard
@@ -360,7 +217,7 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* VIEW ALL button — centered below grid */}
+              {/* View All Button */}
               <div className="mt-10 text-center">
                 <Link
                   to={`/categories/${category.slug}`}
@@ -370,6 +227,7 @@ export default function Home() {
                     <span className="block transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
                       View All
                     </span>
+
                     <span className="absolute left-0 top-full whitespace-nowrap transition-transform duration-500 ease-[0.22,1,0.36,1] group-hover:-translate-y-full">
                       View All
                     </span>
@@ -383,9 +241,7 @@ export default function Home() {
         );
       })}
 
-      {/* ================================================================
-          BRAND STORY SECTION
-          ================================================================ */}
+      {/* BRAND STORY SECTION */}
       <section className="py-14 sm:py-20 border-b border-[#E8E3D9]">
         <Container>
           <div className="bg-[#281A10] text-[#F7F5F0] rounded-3xl overflow-hidden border border-[#3B281B] shadow-2xl">
@@ -397,26 +253,32 @@ export default function Home() {
                   loading="lazy"
                   className="w-full h-full object-cover object-center brightness-95"
                 />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-[#281A10] via-transparent to-transparent lg:hidden" />
               </div>
+
               <div className="lg:col-span-6 p-8 sm:p-12 lg:p-16 space-y-6">
                 <span className="text-xs font-semibold tracking-[0.25em] text-[#B69A63] uppercase">
                   Artisanal Heritage
                 </span>
+
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-white tracking-tight leading-tight">
                   Every Piece Has a Story
                 </h2>
+
                 <p className="text-base text-[#E8E3D9]/80 font-sans leading-relaxed">
                   From the natural character of the timber to the hands that
                   shape it, every BuddhaHome creation celebrates the beauty of
                   thoughtful craftsmanship. We believe home accents should
                   anchor the senses with raw, honest textures.
                 </p>
+
                 <p className="text-sm text-[#E8E3D9]/70 font-sans leading-relaxed">
                   Rather than erasing grain knots and natural live contours, our
                   artisans preserve them as living chronicles of the earth's
                   natural design.
                 </p>
+
                 <div className="pt-2">
                   <Button
                     to="/about"
@@ -434,15 +296,14 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ================================================================
-          CRAFTSMANSHIP VALUES
-          ================================================================ */}
+      {/* CRAFTSMANSHIP VALUES */}
       <section className="py-14 sm:py-20 border-b border-[#E8E3D9] bg-white">
         <Container>
           <div className="text-center max-w-xl mx-auto mb-12">
             <span className="text-xs font-semibold tracking-[0.2em] text-[#76501F] uppercase">
               The BuddhaHome Standard
             </span>
+
             <h2 className="text-2xl sm:text-3xl font-serif text-[#29251F] mt-2">
               Built on Reverence for Raw Wood & Stone
             </h2>
@@ -453,9 +314,11 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Hammer className="w-6 h-6 stroke-[1.5]" />
               </div>
+
               <h3 className="font-serif text-xl text-[#29251F]">
                 Thoughtfully Handcrafted
               </h3>
+
               <p className="text-sm text-[#777166] leading-relaxed">
                 Every joint, bevel, and contour is hand-shaped by artisans who
                 respect traditional joinery methods that endure through
@@ -467,9 +330,11 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Trees className="w-6 h-6 stroke-[1.5]" />
               </div>
+
               <h3 className="font-serif text-xl text-[#29251F]">
                 Natural Material Character
               </h3>
+
               <p className="text-sm text-[#777166] leading-relaxed">
                 We celebrate genuine grain irregularities, growth rings, and
                 honed travertine pockets instead of masking them behind
@@ -481,9 +346,11 @@ export default function Home() {
               <div className="w-14 h-14 mx-auto rounded-full bg-white border border-[#E8E3D9] flex items-center justify-center text-[#76501F] shadow-xs">
                 <Sparkles className="w-6 h-6 stroke-[1.5]" />
               </div>
+
               <h3 className="font-serif text-xl text-[#29251F]">
                 Food-Safe Organic Finishes
               </h3>
+
               <p className="text-sm text-[#777166] leading-relaxed">
                 Finished with natural botanical oils and beeswax buffs that
                 enhance tactile warmth without releasing toxic chemical fumes.
@@ -493,9 +360,7 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ================================================================
-          BESPOKE ENQUIRY CALLOUT
-          ================================================================ */}
+      {/* BESPOKE ENQUIRY CALLOUT */}
       <section className="py-14 sm:py-20">
         <Container>
           <div className="bg-[#EFEAD8] rounded-3xl p-8 sm:p-12 lg:p-16 border border-[#B69A63]/30 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
@@ -503,15 +368,18 @@ export default function Home() {
               <span className="text-xs font-semibold tracking-[0.2em] text-[#76501F] uppercase">
                 Custom Commissions & Inquiries
               </span>
+
               <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#281A10]">
                 Have a Specific Dimension or Wood Species in Mind?
               </h3>
+
               <p className="text-sm text-[#777166] leading-relaxed">
                 Connect directly with our workshop for bespoke sizing, custom
                 live-edge platters, or architectural wood and stone
                 installations.
               </p>
             </div>
+
             <div className="shrink-0">
               <Button to="/contact" variant="primary" size="lg">
                 Contact Workshop

@@ -1,22 +1,51 @@
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-@theme {
-  --color-warm-bg: #F7F5F0;
-  --color-warm-surface: #FFFFFF;
-  --color-text-primary: #29251F;
-  --color-text-secondary: #777166;
-  --color-wood: #76501F;
-  --color-deep-brown: #281A10;
-  --color-gold: #B69A63;
-  --color-border-warm: #E8E3D9;
-
-  /* Premium Typography */
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "DM Sans", sans-serif;
+@font-face {
+  font-family: "Avenir";
+  src: url("/fonts/AvenirLTStd-Roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: "Avenir";
+  src: url("/fonts/Avenir-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Elementry";
+  src: url("/fonts/Elementry-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========================================
+   THEME VARIABLES
+======================================== */
+
+@theme {
+  --color-warm-bg: #f7f5f0;
+  --color-warm-surface: #ffffff;
+  --color-text-primary: #29251f;
+  --color-text-secondary: #777166;
+  --color-wood: #76501f;
+  --color-deep-brown: #281a10;
+  --color-gold: #b69a63;
+  --color-border-warm: #e8e3d9;
+
+  --font-sans: "Avenir", sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+}
+
+/* ========================================
+   GLOBAL BASE STYLES
+======================================== */
 
 @layer base {
   html {
@@ -43,18 +72,8 @@
   h4,
   .font-serif {
     font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-  }
-
-  p,
-  span,
-  a,
-  button,
-  input,
-  textarea,
-  select {
-    font-family: var(--font-sans);
+    font-weight: 100;
+    letter-spacing: -0.02em;
   }
 
   button,
@@ -63,17 +82,20 @@
   }
 
   *:focus-visible {
-    outline: 2px solid #76501F;
+    outline: 2px solid #76501f;
     outline-offset: 2px;
   }
 
   ::selection {
-    background: #B69A63;
-    color: #281A10;
+    background: #b69a63;
+    color: #281a10;
   }
 }
 
-/* Custom Scrollbar */
+/* ========================================
+   CUSTOM SCROLLBAR
+======================================== */
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 3px;
@@ -84,15 +106,18 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D8D2C4;
+  background: #d8d2c4;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B69A63;
+  background: #b69a63;
 }
 
-/* Hide Scrollbar Utility */
+/* ========================================
+   HIDE SCROLLBAR UTILITY
+======================================== */
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -116,12 +116,6 @@ export default function MobileMenu({ isOpen, onClose }) {
               >
                 Contact & Custom Commissions
               </Link>
-              <Link
-                to="/admin"
-                className="block px-3 py-2 text-xs font-semibold uppercase tracking-wider text-[#76501F] hover:bg-[#E8E3D9]/40 rounded-sm"
-              >
-                Studio Admin Panel →
-              </Link>
             </nav>
           </div>
 

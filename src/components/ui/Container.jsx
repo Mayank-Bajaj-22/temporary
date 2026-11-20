@@ -1,15 +1,24 @@
+
 import React from 'react';
 
-export default function Container({ children, className = '', size = 'default' }) {
+export default function Container({
+  children,
+  className = '',
+  size = 'default',
+}) {
   const sizeClasses = {
-    narrow: 'max-w-4xl',
-    default: 'max-w-7xl',
-    wide: 'max-w-[1400px]',
+    narrow: 'max-w-5xl',
+    default: 'max-w-[1500px]',
+    wide: 'max-w-[1600px]',
     full: 'max-w-full',
   };
 
   return (
-    <div className={`mx-auto px-4 sm:px-6 lg:px-8 w-full ${sizeClasses[size] || sizeClasses.default} ${className}`}>
+    <div
+      className={`mx-auto px-4 sm:px-5 lg:px-7 w-full ${
+        sizeClasses[size] || sizeClasses.default
+      } ${className}`}
+    >
       {children}
     </div>
   );

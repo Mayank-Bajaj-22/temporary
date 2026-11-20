@@ -11,9 +11,25 @@ export default function UserLayout() {
       <ScrollToTop />
       <AnnouncementBar />
       <Navbar />
-      <main className="flex-1">
+
+      <style>{`
+        .site-main section:not(:first-of-type) {
+          padding-top: 48px !important;
+          padding-bottom: 48px !important;
+        }
+
+        @media (max-width: 640px) {
+          .site-main section:not(:first-of-type) {
+            padding-top: 28px !important;
+            padding-bottom: 28px !important;
+          }
+        }
+      `}</style>
+
+      <main className="flex-1 site-main">
         <Outlet />
       </main>
+
       <Footer />
     </div>
   );

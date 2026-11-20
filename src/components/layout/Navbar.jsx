@@ -25,7 +25,7 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-40 bg-[#F7F5F0]/95 backdrop-blur-md border-b border-[#E8E3D9] transition-all">
         {/* Main Navbar */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Left side: Hamburger button & Desktop primary links */}
             <div className="flex items-center gap-6">
@@ -100,20 +100,12 @@ export default function Navbar() {
                   Enquire
                 </span>
               </Link>
-
-              <Link
-                to="/admin"
-                className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 bg-white border border-[#E8E3D9] hover:border-[#76501F] text-[#777166] hover:text-[#76501F] rounded-sm transition-colors"
-                title="Open Studio Admin Panel"
-              >
-                <span>Admin</span>
-              </Link>
             </div>
           </div>
         </div>
 
         {/* Category Bar Inspired by the Reference Site */}
-        <div className="hidden md:block border-t border-[#E8E3D9]/60 bg-[#F7F5F0]">
+        {/* <div className="hidden md:block border-t border-[#E8E3D9]/60 bg-[#F7F5F0]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex h-12 min-h-12 items-center justify-center gap-8 px-6 overflow-x-auto overflow-y-hidden whitespace-nowrap no-scrollbar text-[11px] font-semibold tracking-[0.16em] uppercase pl-30">
               {categories.map((cat) => (
@@ -131,7 +123,7 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
-        </div>
+        </div> */}
 
         {/* Expandable Search Drawer */}
         {isSearchOpen && (
