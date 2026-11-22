@@ -695,7 +695,7 @@ export default function Home() {
     <div className="pb-20">
 
       {/* HERO SLIDESHOW */}
-      <section className="relative w-full h-[60vh] min-h-[420px] max-h-[760px] overflow-hidden bg-[#281A10]">
+      <section className="relative w-full h-[65vw] min-h-[260px] max-h-[360px] sm:h-[60vh] sm:min-h-[420px] sm:max-h-[760px] overflow-hidden bg-[#E9DDC9]">
 
         {activeHeroSlide.length > 0 && (
           <AnimatePresence mode="wait">
@@ -723,7 +723,7 @@ export default function Home() {
                   <img
                     src={item.src}
                     alt={item.alt}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                   />
                 </motion.div>
               ))}
