@@ -338,3 +338,20 @@ export async function uploadProductImage(file) {
 
   return publicUrl;
 }
+
+/**
+ * Upload multiple product images to Supabase Storage
+ */
+export async function uploadProductImages(files) {
+  if (!files || files.length === 0) {
+    throw new Error('Please select at least one image.');
+  }
+
+  const imageFiles = Array.from(files);
+
+  const uploadedImages = await Promise.all(
+    imageFiles.map((file) => uploadProductImage(file))
+  );
+
+  return uploadedImages;
+}
