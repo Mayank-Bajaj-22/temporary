@@ -36,11 +36,6 @@ export default function AdminProductEdit() {
     slug: '',
     categorySlug: '',
     description: '',
-    woodType: '',
-    dimensions: '',
-    finish: '',
-    weight: '',
-    craftNote: '',
     featured: false,
     isNewArrival: false,
     available: true,
@@ -60,11 +55,6 @@ export default function AdminProductEdit() {
         slug: product.slug || '',
         categorySlug: product.categorySlug || categories[0]?.slug || 'scalloped-serveware',
         description: product.description || '',
-        woodType: product.details?.woodType || '',
-        dimensions: product.details?.dimensions || '',
-        finish: product.details?.finish || '',
-        weight: product.details?.weight || '',
-        craftNote: product.details?.craftNote || '',
         featured: Boolean(product.featured),
         isNewArrival: Boolean(product.isNewArrival),
         available: product.available !== undefined ? Boolean(product.available) : true,
@@ -180,13 +170,6 @@ export default function AdminProductEdit() {
         categorySlug: formData.categorySlug,
         categoryId: matchedCategory?.id || product.categoryId || null,
         description: formData.description.trim(),
-        details: {
-          woodType: formData.woodType.trim(),
-          dimensions: formData.dimensions.trim(),
-          finish: formData.finish.trim(),
-          weight: formData.weight.trim(),
-          craftNote: formData.craftNote.trim(),
-        },
         images: finalImages,
         featured: formData.featured,
         isNewArrival: formData.isNewArrival,
@@ -323,67 +306,6 @@ export default function AdminProductEdit() {
               }`}
             />
             {errors.description && <p className="text-xs text-rose-600 mt-1">{errors.description}</p>}
-          </div>
-        </div>
-
-        {/* Artisanal Specifications Card */}
-        <div className="bg-white p-6 rounded-xl border border-[#E8E3D9] shadow-xs space-y-4">
-          <h2 className="font-serif text-lg text-[#281A10] border-b border-[#E8E3D9] pb-3">
-            Specifications & Materials
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="woodType" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Materials & Wood Species
-              </label>
-              <input
-                type="text"
-                id="woodType"
-                value={formData.woodType}
-                onChange={(e) => setFormData({ ...formData, woodType: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="dimensions" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Dimensions
-              </label>
-              <input
-                type="text"
-                id="dimensions"
-                value={formData.dimensions}
-                onChange={(e) => setFormData({ ...formData, dimensions: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="finish" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Surface Treatment
-              </label>
-              <input
-                type="text"
-                id="finish"
-                value={formData.finish}
-                onChange={(e) => setFormData({ ...formData, finish: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="weight" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Approx. Weight
-              </label>
-              <input
-                type="text"
-                id="weight"
-                value={formData.weight}
-                onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
           </div>
         </div>
 

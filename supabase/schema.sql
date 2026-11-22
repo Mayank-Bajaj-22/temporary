@@ -20,15 +20,6 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
 
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 
--- Only existing admins or service_role can read or manage admin_users
-CREATE POLICY "Admins can view admin_users list"
-  ON public.admin_users
-  FOR SELECT
-  TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM public.admin_users WHERE id = auth.uid()) OR
-    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
-  );
 
 -- 3. SECURITY DEFINER HELPER: is_admin()
 -- Checks either the dedicated admin_users table OR the secure app_metadata claim.
@@ -47,6 +38,12 @@ AS $$
       SELECT 1 FROM public.admin_users WHERE id = auth.uid()
     );
 $$;
+
+CREATE POLICY "Admins can view admin_users list"
+  ON public.admin_users
+  FOR SELECT
+  TO authenticated
+  USING (public.is_admin());
 
 -- 4. CATEGORIES TABLE
 CREATE TABLE IF NOT EXISTS public.categories (

@@ -32,11 +32,6 @@ export default function AdminProductNew() {
     slug: '',
     categorySlug: categories[0]?.slug || 'scalloped-serveware',
     description: '',
-    woodType: 'American Walnut & Natural Teak',
-    dimensions: '35 cm (L) x 25 cm (W) x 3.5 cm (H)',
-    finish: 'Hand-rubbed organic beeswax & natural oil',
-    weight: '1.2 kg',
-    craftNote: 'Hand-turned with traditional joinery by master studio artisans.',
     featured: false,
     isNewArrival: true,
     available: true,
@@ -114,59 +109,84 @@ export default function AdminProductNew() {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setGeneralError('');
-    if (!validate()) return;
+  
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setGeneralError('');
 
-    try {
-      setSaving(true);
+  if (!validate()) return;
 
-      // Upload file to Supabase Storage if an actual image was selected
-      let finalImageUrl = '/images/buddhahome/walnut-scalloped-serving-collection.png';
+  try {
+    setSaving(true);
 
-      if (imageFile) {
-        try {
-          finalImageUrl = await uploadProductImage(imageFile);
-        } catch (uploadErr) {
-          console.error('Storage upload failed:', uploadErr);
-          setGeneralError(`Image upload failed: ${uploadErr.message}. The rest of your form was preserved.`);
-          setSaving(false);
-          return;
-        }
-      }
+    // Upload image to Supabase Storage
+    let finalImageUrl = '/images/buddhahome/walnut-scalloped-serving-collection.png';
 
-      const matchedCategory = categories.find((c) => c.slug === formData.categorySlug);
-
-      const productPayload = {
-        name: formData.name.trim(),
-        slug: formData.slug.trim(),
-        category: matchedCategory ? matchedCategory.name : 'Scalloped Serveware',
-        categorySlug: formData.categorySlug,
-        categoryId: matchedCategory?.id || null,
-        description: formData.description.trim(),
-        details: {
-          woodType: formData.woodType.trim(),
-          dimensions: formData.dimensions.trim(),
-          finish: formData.finish.trim(),
-          weight: formData.weight.trim(),
-          craftNote: formData.craftNote.trim(),
-        },
-        images: [finalImageUrl],
-        featured: formData.featured,
-        isNewArrival: formData.isNewArrival,
-        available: formData.available,
-      };
-
-      await addProduct(productPayload);
-      navigate('/admin/products');
-    } catch (err) {
-      console.error('Failed to save product:', err);
-      setGeneralError(err.message || 'Failed to save product in database.');
-    } finally {
-      setSaving(false);
+    if (imageFile) {
+      finalImageUrl = await uploadProductImage(imageFile);
     }
-  };
+
+    const matchedCategory = categories.find(
+      (c) => c.slug === formData.categorySlug
+    );
+
+    const productPayload = {
+      name: formData.name.trim(),
+      slug: formData.slug.trim(),
+      category: matchedCategory ? matchedCategory.name : 'Scalloped Serveware',
+      categorySlug: formData.categorySlug,
+      categoryId: matchedCategory?.id || null,
+      description: formData.description.trim(),
+      images: [finalImageUrl],
+      featured: formData.featured,
+      isNewArrival: formData.isNewArrival,
+      available: formData.available,
+    };
+
+    // Save product to database
+    await addProduct(productPayload);
+
+    // Clear image preview URL
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    // Reset all form fields
+    setFormData({
+      name: '',
+      slug: '',
+      categorySlug: categories[0]?.slug || 'scalloped-serveware',
+      description: '',
+      featured: false,
+      isNewArrival: true,
+      available: true,
+    });
+
+    setImageFile(null);
+    setPreviewUrl('');
+    setIsSlugManuallyEdited(false);
+    setErrors({});
+    setGeneralError('');
+
+    // Reset actual file input
+    const imageInput = document.getElementById('imageInput');
+    if (imageInput) imageInput.value = '';
+
+    alert('Product successfully uploaded! You can add another product.');
+
+  } catch (err) {
+    console.error('Failed to save product:', err);
+    setGeneralError(err.message || 'Failed to save product in database.');
+  } finally {
+    setSaving(false);
+  }
+};
+
+const matchedCategory = categories.find((c) => c.slug === formData.categorySlug);
+
+console.log('Selected category:', matchedCategory);
+console.log('Category ID:', matchedCategory?.id);
+console.log('Category Slug:', matchedCategory?.slug);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -285,67 +305,6 @@ export default function AdminProductNew() {
               }`}
             />
             {errors.description && <p className="text-xs text-rose-600 mt-1">{errors.description}</p>}
-          </div>
-        </div>
-
-        {/* Artisanal Specifications Card */}
-        <div className="bg-white p-6 rounded-xl border border-[#E8E3D9] shadow-xs space-y-4">
-          <h2 className="font-serif text-lg text-[#281A10] border-b border-[#E8E3D9] pb-3">
-            Specifications & Materials
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="woodType" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Materials & Wood Species
-              </label>
-              <input
-                type="text"
-                id="woodType"
-                value={formData.woodType}
-                onChange={(e) => setFormData({ ...formData, woodType: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="dimensions" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Dimensions
-              </label>
-              <input
-                type="text"
-                id="dimensions"
-                value={formData.dimensions}
-                onChange={(e) => setFormData({ ...formData, dimensions: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="finish" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Surface Treatment
-              </label>
-              <input
-                type="text"
-                id="finish"
-                value={formData.finish}
-                onChange={(e) => setFormData({ ...formData, finish: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="weight" className="block text-xs font-semibold uppercase tracking-wider text-[#29251F] mb-1">
-                Approx. Weight
-              </label>
-              <input
-                type="text"
-                id="weight"
-                value={formData.weight}
-                onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                className="w-full px-3.5 py-2.5 bg-[#F7F5F0] border border-[#E8E3D9] rounded-sm text-sm text-[#29251F] focus:border-[#76501F] focus:outline-none"
-              />
-            </div>
           </div>
         </div>
 

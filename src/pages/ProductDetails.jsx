@@ -115,7 +115,7 @@ export default function ProductDetails() {
               </p>
 
               {/* Craftsmanship Specifications Box */}
-              {product.details && (
+              {/* {product.details && (
                 <div className="bg-white border border-[#E8E3D9] rounded-xl p-5 space-y-3.5 text-xs">
                   <h4 className="font-semibold text-[#281A10] uppercase tracking-wider text-[11px] pb-2 border-b border-[#E8E3D9]">
                     Artisanal Specifications
@@ -149,7 +149,7 @@ export default function ProductDetails() {
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
 
               {/* Direct Enquiry Box - WhatsApp & Phone Call Only (No Pricing) */}
               <div className="bg-[#EFEAD8] border border-[#B69A63]/40 rounded-2xl p-5 sm:p-6 space-y-4">
